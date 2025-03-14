@@ -11,6 +11,7 @@ interface ChatMessagesProps {
   messages: MessageProps[];
   chatLoading: boolean;
   isPending: boolean;
+  typingLoading: boolean;
   activeChat: ConversationProps | undefined;
   mutate: UseMutateFunction<string, Error, void, unknown>;
 }
@@ -24,6 +25,7 @@ const ChatMessages = ({
   activeChat,
   isPending,
   mutate,
+  typingLoading,
 }: ChatMessagesProps) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -62,23 +64,35 @@ const ChatMessages = ({
                 </div>
               </div>
             ))}
+
             <div ref={messagesEndRef} />
           </div>
 
           {activeChat && (
-            <div className="border-t pt-2 flex items-center">
-              <input
-                type="text"
-                className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Type a message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              />
-              <Button onClick={sendMessage} className="ml-2">
-                Send
-              </Button>
-            </div>
+            <>
+              {typingLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg max-w-[75%] flex items-center space-x-1">
+                    <span className="typing-dot animate-blink"></span>
+                    <span className="typing-dot animate-blink [animation-delay:0.2s]"></span>
+                    <span className="typing-dot animate-blink [animation-delay:0.4s]"></span>
+                  </div>
+                </div>
+              )}
+              <div className="border-t pt-2 flex items-center">
+                <input
+                  type="text"
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Type a message..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                />
+                <Button onClick={sendMessage} className="ml-2">
+                  Send
+                </Button>
+              </div>
+            </>
           )}
         </>
       )}

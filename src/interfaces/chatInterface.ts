@@ -20,3 +20,8 @@ export interface AllConversationsResponse {
 export interface ChatMessagesResponse {
     messages: MessageProps[]
 }
+
+export interface DashboardStatsResponse {
+    users: number;
+    chats: number;
+}

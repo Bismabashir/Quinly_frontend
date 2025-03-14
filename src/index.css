@@ -136,7 +136,28 @@
     }
   }
 
+  @keyframes blink {
+    0% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.3;
+    }
+  }
+
   .animate-bgMove {
     animation: bgMove 10s ease infinite;
+  }
+
+  .animate-blink {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: gray;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
   }
 }

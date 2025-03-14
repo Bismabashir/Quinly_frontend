@@ -16,6 +16,7 @@ const Chats = () => {
   });
 
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const [typingLoading, setTypingLoading] = useState<boolean>(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: newChat,
@@ -64,6 +65,7 @@ const Chats = () => {
       try {
         const data = JSON.parse(event.data);
         console.log("🔍 Parsed WebSocket Message:", data);
+        setTypingLoading(false);
         setMessages((prev) => [...prev, data]);
       } catch (error) {
         console.error("❌ Error parsing WebSocket message:", error);
@@ -81,7 +83,7 @@ const Chats = () => {
 
   const sendMessage = () => {
     if (!input.trim() || !activeChatId || !socketRef.current) return;
-
+    setTypingLoading(true);
     const newUserMessage = JSON.stringify({
       message: input,
       is_premium: false,
@@ -112,6 +114,7 @@ const Chats = () => {
         activeChat={chats?.find((chat) => chat.id === activeChatId)}
         isPending={isPending}
         mutate={mutate}
+        typingLoading={typingLoading}
       />
     </div>
   );
