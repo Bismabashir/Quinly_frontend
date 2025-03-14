@@ -9,7 +9,7 @@ export interface UserProps {
 }
 
 export interface LoginResponse {
-    refresh: string;
+    expires_in: number;
     access: string;
     user: UserProps
 }

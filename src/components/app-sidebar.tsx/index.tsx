@@ -1,5 +1,5 @@
 import { ChevronUp, Home, Inbox, User, User2 } from "lucide-react";
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -20,9 +20,11 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoginResponse } from "@/interfaces/authInterface";
+import { customSuccessToast } from "../custom-toast";
 
 export function AppSidebar() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const user: LoginResponse | undefined = queryClient.getQueryData(["user"]);
 
   const location = useLocation();
@@ -58,6 +60,12 @@ export function AppSidebar() {
     ? [...commonItems, ...adminItems]
     : commonItems;
 
+  const userLogout = () => {
+    queryClient.clear();
+    customSuccessToast("User logout successful");
+    navigate({ to: "/login" });
+  };
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -73,9 +81,7 @@ export function AppSidebar() {
                     <Link
                       to={item.url}
                       className={`flex items-center gap-2 p-2 rounded-md ${
-                        isActive(item.url)
-                          ? "bg-black text-white"
-                          : ""
+                        isActive(item.url) ? "bg-black text-white" : ""
                       }`}
                     >
                       <item.icon />
@@ -102,7 +108,7 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={userLogout}>
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
