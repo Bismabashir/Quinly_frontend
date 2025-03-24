@@ -53,7 +53,9 @@ const Chats = () => {
       (q: any) => q.queryKey[0] === "user"
     )?.state?.data;
 
-    const socketUrl = `ws://127.0.0.1:8000/ws/chat/${activeChatId}/?token=${user.access}`;
+    // const socketUrl = `ws://127.0.0.1:8000/ws/chat/${activeChatId}/?token=${user.access}`;
+    const socketUrl = `${import.meta.env.VITE_WS_URL}/ws/chat/${activeChatId}/?token=${user.access}`;
+
     const ws = new WebSocket(socketUrl);
     socketRef.current = ws;
 
